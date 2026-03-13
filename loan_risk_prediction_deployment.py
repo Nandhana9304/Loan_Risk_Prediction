@@ -12,6 +12,7 @@ import pandas as pd
 import joblib
 
 model = joblib.load("loan_risk_prediction_model.pkl")
+
 st.title("Loan Risk Prediction System")
 st.write("Check whether loan is approved or not")
 
@@ -20,11 +21,34 @@ Income = st.number_input("Enter Income")
 LoanAmount = st.number_input("Enter Loan Amount")
 CreditScore = st.number_input("Enter Credit Score")
 YearsExperience = st.number_input("Enter Years of Experience")
+
 Gender = st.selectbox("Select Gender", ["Male", "Female"])
 Education = st.selectbox("Select Education", ['High School', 'PhD', 'Bachelors', 'Masters'])
 City = st.selectbox("Select City", ['Houston', 'San Francisco', 'New York', 'Chicago'])
 EmploymentType = st.selectbox("Select Employment Type", ['Unemployed', 'Self-employed', 'Salaried'])
 
+# Encoding dictionaries
+gender_map = {"Male":1, "Female":0}
+
+education_map = {
+    "High School":0,
+    "PhD":1,
+    "Bachelors":2,
+    "Masters":3
+}
+
+city_map = {
+    "Houston":0,
+    "San Francisco":1,
+    "New York":2,
+    "Chicago":3
+}
+
+employment_map = {
+    "Unemployed":0,
+    "Self-employed":1,
+    "Salaried":2
+}
 
 df = pd.DataFrame({
     "Age": [Age],
@@ -32,15 +56,16 @@ df = pd.DataFrame({
     "LoanAmount": [LoanAmount],
     "CreditScore": [CreditScore],
     "YearsExperience": [YearsExperience],
-    "Gender": [Gender],
-    "Education": [Education],
-    "City": [City],
-    "EmploymentType": [EmploymentType]
+    "Gender": [gender_map[Gender]],
+    "Education": [education_map[Education]],
+    "City": [city_map[City]],
+    "EmploymentType": [employment_map[EmploymentType]]
 })
 
 if st.button("Predict"):
     prediction = model.predict(df)
+
     if prediction[0] == 1:
-        st.error("Loan is Approved")
+        st.success("Loan Approved")
     else:
-        st.success("Loan is Rejected")
+        st.error("Loan Not Approved")is Rejected")
