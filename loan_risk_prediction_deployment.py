@@ -68,4 +68,4 @@ if st.button("Predict"):
     if prediction[0] == 1:
         st.success("Loan Approved")
     else:
-        st.error("Loan Not Approved")is Rejected")
+        st.error("Loan Rejected")
